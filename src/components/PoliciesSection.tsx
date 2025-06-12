@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shield, Users, MessageCircle, Calendar, AlertTriangle, Lock } from 'lucide-react';
+import Card from './ui/Card';
 
 const PoliciesSection: React.FC = () => {
   const policies = [
@@ -36,54 +37,62 @@ const PoliciesSection: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl">
-      <h2 className="text-3xl font-bold text-indigo-600 text-center mb-6">
-        Safety Guidelines & Policies
-      </h2>
-      <p className="text-center mb-8 text-gray-600 text-lg leading-relaxed">
-        Your safety and well-being are our top priorities. We are committed to fostering 
-        a respectful and secure environment for all users.
-      </p>
+    <div className="space-y-8 animate-fade-in-up">
+      <Card variant="glass" className="text-center">
+        <h2 className="text-3xl font-bold text-primary-400 mb-6">
+          Safety Guidelines & Policies
+        </h2>
+        <p className="text-primary-200 text-lg leading-relaxed">
+          Your safety and well-being are our top priorities. We are committed to fostering 
+          a respectful and secure environment for all users.
+        </p>
+      </Card>
 
       <div className="space-y-6 mb-8">
         {policies.map((policy, index) => {
           const IconComponent = policy.icon;
           return (
-            <div key={index} className="bg-gradient-to-r from-indigo-50 to-purple-50 p-6 rounded-xl border-l-4 border-indigo-600">
+            <Card 
+              key={index} 
+              variant="glass" 
+              hover 
+              className="animate-fade-in-up border-primary-400/20"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
               <div className="flex items-start gap-4">
-                <div className="bg-indigo-100 p-3 rounded-full">
-                  <IconComponent className="w-6 h-6 text-indigo-600" />
+                <div className="bg-primary-500/20 p-3 rounded-full border border-primary-400/30">
+                  <IconComponent className="w-6 h-6 text-primary-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-indigo-600 mb-2">
+                  <h3 className="text-lg font-bold text-primary-400 mb-2">
                     {policy.title}
                   </h3>
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="text-primary-200 leading-relaxed">
                     {policy.content}
                   </p>
                 </div>
               </div>
-            </div>
+            </Card>
           );
         })}
       </div>
 
-      <div className="bg-gradient-to-r from-red-50 to-red-100 p-6 rounded-xl border-l-4 border-red-500">
+      <Card variant="glass" className="border-error-400/30">
         <div className="flex items-start gap-4">
-          <div className="bg-red-100 p-3 rounded-full">
-            <AlertTriangle className="w-6 h-6 text-red-600" />
+          <div className="bg-error-500/20 p-3 rounded-full border border-error-400/30">
+            <AlertTriangle className="w-6 h-6 text-error-400" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-red-600 mb-2">
+            <h3 className="text-lg font-bold text-error-400 mb-2">
               ⚠️ Important Notice
             </h3>
-            <p className="text-red-700 font-semibold">
+            <p className="text-error-300 font-semibold">
               Failure to comply with these guidelines may result in the suspension or 
               termination of your agreement with us.
             </p>
           </div>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

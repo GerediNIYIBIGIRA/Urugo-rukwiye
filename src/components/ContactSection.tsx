@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { ContactData } from '../types';
 import { Mail, Phone, Clock, Shield, CheckCircle, AlertCircle } from 'lucide-react';
+import Card from './ui/Card';
+import Button from './ui/Button';
+import Input from './ui/Input';
+import Select from './ui/Select';
+import Textarea from './ui/Textarea';
+import Alert from './ui/Alert';
 
 const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState<ContactData>({
@@ -12,6 +18,15 @@ const ContactSection: React.FC = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const subjectOptions = [
+    { value: '', label: 'Select a subject' },
+    { value: 'general', label: 'General Inquiry' },
+    { value: 'technical', label: 'Technical Support' },
+    { value: 'billing', label: 'Billing Question' },
+    { value: 'safety', label: 'Safety Concern' },
+    { value: 'feedback', label: 'Feedback' },
+  ];
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -51,22 +66,24 @@ const ContactSection: React.FC = () => {
   };
 
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl">
-      <h2 className="text-3xl font-bold text-indigo-600 text-center mb-6">
-        Contact Us
-      </h2>
-      <p className="text-center mb-8 text-gray-600 text-lg leading-relaxed">
-        We're here to help! Whether you have a question, need assistance, or want to 
-        provide feedback, please don't hesitate to get in touch.
-      </p>
+    <div className="space-y-8 animate-fade-in-up">
+      <Card variant="glass" className="text-center">
+        <h2 className="text-3xl font-bold text-primary-400 mb-6">
+          Contact Us
+        </h2>
+        <p className="text-primary-200 text-lg leading-relaxed">
+          We're here to help! Whether you have a question, need assistance, or want to 
+          provide feedback, please don't hesitate to get in touch.
+        </p>
+      </Card>
 
       <div className="grid md:grid-cols-2 gap-8 mb-8">
-        <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-6 rounded-xl border border-indigo-100">
+        <Card variant="glass" hover className="border-primary-400/30">
           <div className="flex items-center gap-3 mb-4">
-            <Mail className="w-6 h-6 text-indigo-600" />
-            <h3 className="text-lg font-bold text-indigo-600">Customer Support</h3>
+            <Mail className="w-6 h-6 text-primary-400" />
+            <h3 className="text-lg font-bold text-primary-400">Customer Support</h3>
           </div>
-          <div className="space-y-2 text-gray-700">
+          <div className="space-y-2 text-primary-200">
             <p><strong>Email:</strong> support@urugorukwiyeplatform.com</p>
             <p><strong>Phone:</strong> +250 78X XXX XXX</p>
             <div className="flex items-center gap-2">
@@ -75,111 +92,85 @@ const ContactSection: React.FC = () => {
             </div>
             <p><strong>Response Time:</strong> Within 2-48 business hours</p>
           </div>
-        </div>
+        </Card>
 
-        <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-xl border border-red-200">
+        <Card variant="glass" hover className="border-error-400/30">
           <div className="flex items-center gap-3 mb-4">
-            <Shield className="w-6 h-6 text-red-600" />
-            <h3 className="text-lg font-bold text-red-600">Safety Concerns</h3>
+            <Shield className="w-6 h-6 text-error-400" />
+            <h3 className="text-lg font-bold text-error-400">Safety Concerns</h3>
           </div>
-          <div className="space-y-2 text-gray-700">
+          <div className="space-y-2 text-primary-200">
             <p><strong>Email:</strong> safety@urugorukwiyeplatform.com</p>
             <p>Report suspicious activity, inappropriate behavior, or safety concerns immediately.</p>
           </div>
-        </div>
+        </Card>
       </div>
 
-      <div>
-        <h3 className="text-2xl font-bold text-indigo-600 text-center mb-6">
+      <Card variant="glass">
+        <h3 className="text-2xl font-bold text-primary-400 text-center mb-6">
           Send us a Message
         </h3>
         
         {message && (
-          <div className={`p-4 rounded-lg mb-6 flex items-center gap-2 ${
-            message.type === 'success' 
-              ? 'bg-green-50 text-green-700 border border-green-200' 
-              : 'bg-red-50 text-red-700 border border-red-200'
-          }`}>
-            {message.type === 'success' ? <CheckCircle className="w-5 h-5" /> : <AlertCircle className="w-5 h-5" />}
-            {message.text}
-          </div>
+          <Alert
+            type={message.type}
+            message={message.text}
+            onClose={() => setMessage(null)}
+          />
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Your Name *
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
-              />
-            </div>
+            <Input
+              label="Your Name *"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+              placeholder="Enter your full name"
+            />
             
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Your Email *
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
-              />
-            </div>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Subject *
-            </label>
-            <select
-              name="subject"
-              value={formData.subject}
+            <Input
+              label="Your Email *"
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleInputChange}
               required
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors"
-            >
-              <option value="">Select a subject</option>
-              <option value="general">General Inquiry</option>
-              <option value="technical">Technical Support</option>
-              <option value="billing">Billing Question</option>
-              <option value="safety">Safety Concern</option>
-              <option value="feedback">Feedback</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Message *
-            </label>
-            <textarea
-              name="message"
-              value={formData.message}
-              onChange={handleInputChange}
-              required
-              rows={6}
-              placeholder="Please describe your inquiry in detail..."
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors resize-none"
+              placeholder="your.email@example.com"
             />
           </div>
+          
+          <Select
+            label="Subject *"
+            name="subject"
+            value={formData.subject}
+            onChange={handleInputChange}
+            required
+            options={subjectOptions}
+          />
 
-          <button
+          <Textarea
+            label="Message *"
+            name="message"
+            value={formData.message}
+            onChange={handleInputChange}
+            required
+            rows={6}
+            placeholder="Please describe your inquiry in detail..."
+          />
+
+          <Button
             type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="primary"
+            size="lg"
+            loading={isSubmitting}
+            className="w-full shadow-glow-lg"
           >
             {isSubmitting ? 'Sending...' : 'Send Message'}
-          </button>
+          </Button>
         </form>
-      </div>
+      </Card>
     </div>
   );
 };

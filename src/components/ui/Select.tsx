@@ -16,7 +16,7 @@ const Select: React.FC<SelectProps> = ({
   return (
     <div className="space-y-2">
       {label && (
-        <label className="block text-sm font-semibold text-neutral-700">
+        <label className="block text-sm font-semibold text-primary-300">
           {label}
         </label>
       )}
@@ -25,13 +25,13 @@ const Select: React.FC<SelectProps> = ({
         {...props}
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} className="bg-dark-800 text-white">
             {option.label}
           </option>
         ))}
       </select>
       {error && (
-        <p className="text-sm text-error-600 font-medium">{error}</p>
+        <p className="text-sm text-error-400 font-medium">{error}</p>
       )}
     </div>
   );

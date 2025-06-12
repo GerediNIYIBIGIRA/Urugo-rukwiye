@@ -52,6 +52,104 @@
     - Add policies for admin access to manage data
 */
 
+
+-- Create email_logs table for tracking all email communications
+CREATE TABLE IF NOT EXISTS email_logs (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    recipient_email VARCHAR(255) NOT NULL,
+    recipient_name VARCHAR(255) NOT NULL,
+    email_type VARCHAR(50) NOT NULL CHECK (email_type IN ('employee_welcome', 'employer_welcome', 'notification', 'reminder')),
+    email_subject TEXT NOT NULL,
+    template_used VARCHAR(100) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'sent', 'failed', 'bounced')),
+    error_message TEXT,
+    sent_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+    user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+    company_name VARCHAR(255),
+    services TEXT[], -- Array of services for employer emails
+    metadata JSONB DEFAULT '{}' -- Additional data as needed
+);
+
+-- Create indexes for better query performance
+CREATE INDEX IF NOT EXISTS idx_email_logs_recipient_email ON email_logs(recipient_email);
+CREATE INDEX IF NOT EXISTS idx_email_logs_email_type ON email_logs(email_type);
+CREATE INDEX IF NOT EXISTS idx_email_logs_status ON email_logs(status);
+CREATE INDEX IF NOT EXISTS idx_email_logs_created_at ON email_logs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_email_logs_user_id ON email_logs(user_id);
+CREATE INDEX IF NOT EXISTS idx_email_logs_sent_at ON email_logs(sent_at DESC);
+
+-- Create composite indexes for common query patterns
+CREATE INDEX IF NOT EXISTS idx_email_logs_recipient_type ON email_logs(recipient_email, email_type);
+CREATE INDEX IF NOT EXISTS idx_email_logs_status_created ON email_logs(status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_email_logs_user_type_status ON email_logs(user_id, email_type, status);
+
+-- Create a function to automatically cleanup old logs (optional)
+CREATE OR REPLACE FUNCTION cleanup_old_email_logs()
+RETURNS INTEGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+DECLARE
+    deleted_count INTEGER;
+BEGIN
+    -- Delete logs older than 90 days
+    DELETE FROM email_logs 
+    WHERE created_at < NOW() - INTERVAL '90 days';
+    
+    GET DIAGNOSTICS deleted_count = ROW_COUNT;
+    
+    RETURN deleted_count;
+END;
+$$;
+
+-- Create a view for email statistics (optional but useful for reporting)
+CREATE OR REPLACE VIEW email_stats AS
+SELECT 
+    DATE(created_at) as date,
+    email_type,
+    status,
+    COUNT(*) as count,
+    COUNT(*) FILTER (WHERE status = 'sent') as sent_count,
+    COUNT(*) FILTER (WHERE status = 'failed') as failed_count,
+    ROUND(
+        (COUNT(*) FILTER (WHERE status = 'sent')::DECIMAL / COUNT(*)) * 100, 
+        2
+    ) as success_rate
+FROM email_logs
+WHERE created_at >= CURRENT_DATE - INTERVAL '30 days'
+GROUP BY DATE(created_at), email_type, status
+ORDER BY date DESC, email_type, status;
+
+-- Enable Row Level Security (RLS)
+ALTER TABLE email_logs ENABLE ROW LEVEL SECURITY;
+
+-- Create RLS policies
+-- Allow users to view their own email logs
+CREATE POLICY "Users can view their own email logs" ON email_logs
+    FOR SELECT USING (
+        auth.uid() = user_id OR 
+        auth.email() = recipient_email
+    );
+
+-- Allow service role to insert/update email logs
+CREATE POLICY "Service role can manage email logs" ON email_logs
+    FOR ALL USING (
+        auth.role() = 'service_role'
+    );
+
+-- Allow authenticated users to insert email logs for their own emails
+CREATE POLICY "Users can insert their own email logs" ON email_logs
+    FOR INSERT WITH CHECK (
+        auth.uid() = user_id OR 
+        auth.email() = recipient_email
+    );
+
+-- Grant necessary permissions
+GRANT SELECT ON email_logs TO authenticated;
+GRANT INSERT ON email_logs TO authenticated;
+GRANT SELECT ON email_stats TO authenticated;
+
 -- Create employers table
 CREATE TABLE IF NOT EXISTS employers (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),

@@ -9,25 +9,25 @@ const AboutSection: React.FC = () => {
       icon: Shield,
       title: 'Verified Profiles',
       description: 'All users undergo thorough verification for safety and trust',
-      color: 'text-primary-600'
+      color: 'text-primary-400'
     },
     {
       icon: Users,
       title: 'Smart Matching',
       description: 'Advanced algorithms connect the right people for perfect fits',
-      color: 'text-secondary-600'
+      color: 'text-accent-400'
     },
     {
       icon: Heart,
       title: 'Community Support',
       description: '24/7 support system ensuring smooth experiences for all',
-      color: 'text-error-600'
+      color: 'text-error-400'
     },
     {
       icon: Award,
       title: 'Quality Assurance',
       description: 'Continuous monitoring and feedback system for excellence',
-      color: 'text-success-600'
+      color: 'text-success-400'
     }
   ];
 
@@ -54,20 +54,20 @@ const AboutSection: React.FC = () => {
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-center mb-6">
             <div className="relative">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center shadow-glow animate-glow">
-                <Globe className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 bg-gradient-to-br from-primary-500/20 to-accent-500/20 rounded-2xl flex items-center justify-center shadow-glow animate-glow border border-primary-400/30">
+                <Globe className="w-8 h-8 text-primary-400" />
               </div>
-              <div className="absolute -top-1 -right-1 w-6 h-6 bg-success-500 rounded-full flex items-center justify-center animate-bounce-gentle">
-                <Zap className="w-3 h-3 text-white" />
+              <div className="absolute -top-1 -right-1 w-6 h-6 bg-accent-500 rounded-full flex items-center justify-center animate-bounce-gentle">
+                <Zap className="w-3 h-3 text-dark-900" />
               </div>
             </div>
           </div>
           
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-white mb-6">
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-primary-400 mb-6">
             About Urugo Rukwiye Platform
           </h2>
           
-          <p className="text-lg md:text-xl text-white/90 leading-relaxed mb-8">
+          <p className="text-lg md:text-xl text-primary-200 leading-relaxed mb-8">
             Our mission is to revolutionize the way domestic employees and employers 
             find each other, fostering a community built on trust, respect, and mutual benefit.
           </p>
@@ -93,14 +93,14 @@ const AboutSection: React.FC = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div className="flex justify-center mb-3">
-                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                  <IconComponent className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-primary-500/20 rounded-xl flex items-center justify-center border border-primary-400/30">
+                  <IconComponent className="w-6 h-6 text-primary-400" />
                 </div>
               </div>
-              <div className="text-2xl md:text-3xl font-bold text-white mb-1">
+              <div className="text-2xl md:text-3xl font-bold text-primary-400 mb-1">
                 {stat.number}
               </div>
-              <div className="text-sm text-white/80 font-medium">
+              <div className="text-sm text-primary-300 font-medium">
                 {stat.label}
               </div>
             </Card>
@@ -112,12 +112,12 @@ const AboutSection: React.FC = () => {
       <div className="grid md:grid-cols-2 gap-8">
         <Card variant="glass" hover className="animate-slide-in-left">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center shadow-glow">
-              <Heart className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-500/20 to-accent-500/20 rounded-xl flex items-center justify-center shadow-glow border border-primary-400/30">
+              <Heart className="w-6 h-6 text-primary-400" />
             </div>
-            <h3 className="text-2xl font-bold text-white">Our Vision</h3>
+            <h3 className="text-2xl font-bold text-primary-400">Our Vision</h3>
           </div>
-          <p className="text-white/90 leading-relaxed text-lg">
+          <p className="text-primary-200 leading-relaxed text-lg">
             We envision a future where every home has the reliable support it needs, 
             and every domestic professional finds fulfilling and dignified employment 
             that respects their skills and contributions.
@@ -126,19 +126,19 @@ const AboutSection: React.FC = () => {
         
         <Card variant="glass" hover className="animate-slide-in-right">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-br from-secondary-500 to-primary-500 rounded-xl flex items-center justify-center shadow-glow">
-              <Shield className="w-6 h-6 text-white" />
+            <div className="w-12 h-12 bg-gradient-to-br from-accent-500/20 to-primary-500/20 rounded-xl flex items-center justify-center shadow-glow border border-primary-400/30">
+              <Shield className="w-6 h-6 text-primary-400" />
             </div>
-            <h3 className="text-2xl font-bold text-white">Our Values</h3>
+            <h3 className="text-2xl font-bold text-primary-400">Our Values</h3>
           </div>
           <ul className="space-y-3">
             {values.map((value, index) => (
               <li 
                 key={index} 
-                className="flex items-center gap-3 text-white/90 animate-fade-in-up"
+                className="flex items-center gap-3 text-primary-200 animate-fade-in-up"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="w-6 h-6 bg-success-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-6 h-6 bg-success-500/20 rounded-full flex items-center justify-center flex-shrink-0 border border-success-400/30">
                   <CheckCircle className="w-4 h-4 text-success-400" />
                 </div>
                 <span className="leading-relaxed">{value}</span>
@@ -150,7 +150,7 @@ const AboutSection: React.FC = () => {
 
       {/* Features Grid */}
       <div>
-        <h3 className="text-2xl md:text-3xl font-bold text-white text-center mb-8 animate-fade-in-up">
+        <h3 className="text-2xl md:text-3xl font-bold text-primary-400 text-center mb-8 animate-fade-in-up">
           Why Choose Our Platform?
         </h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -166,14 +166,14 @@ const AboutSection: React.FC = () => {
                 style={{ animationDelay: `${index * 0.15}s` }}
               >
                 <div className="flex justify-center mb-4">
-                  <div className={`w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center ${feature.color} backdrop-blur-sm border border-white/20`}>
+                  <div className={`w-14 h-14 bg-dark-800/30 rounded-2xl flex items-center justify-center ${feature.color} backdrop-blur-sm border border-primary-400/20`}>
                     <IconComponent className="w-7 h-7" />
                   </div>
                 </div>
-                <h4 className="text-lg font-bold text-white mb-3">
+                <h4 className="text-lg font-bold text-primary-400 mb-3">
                   {feature.title}
                 </h4>
-                <p className="text-white/80 text-sm leading-relaxed">
+                <p className="text-primary-300 text-sm leading-relaxed">
                   {feature.description}
                 </p>
               </Card>

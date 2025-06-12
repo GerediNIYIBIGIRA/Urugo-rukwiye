@@ -18,7 +18,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
 
   return (
     <div className="flex justify-center mb-12 animate-fade-in-up animate-stagger-1">
-      <div className="bg-white/10 backdrop-blur-md rounded-2xl p-2 border border-white/20 shadow-large">
+      <div className="bg-dark-900/30 backdrop-blur-md rounded-2xl p-2 border border-primary-400/20 shadow-large">
         <div className="flex gap-2 flex-wrap justify-center">
           {tabs.map((tab, index) => (
             <button
@@ -28,8 +28,8 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
                 relative px-4 py-3 rounded-xl font-semibold text-sm md:text-base transition-all duration-300 
                 flex items-center gap-2 min-w-[120px] justify-center
                 ${activeTab === tab.id
-                  ? 'bg-white text-primary-700 shadow-medium transform scale-105'
-                  : 'text-white/90 hover:bg-white/10 hover:text-white hover:scale-105'
+                  ? 'bg-gradient-to-r from-primary-600 to-accent-600 text-dark-900 shadow-medium transform scale-105'
+                  : 'text-primary-300 hover:bg-primary-500/10 hover:text-primary-200 hover:scale-105'
                 }
               `}
               style={{ animationDelay: `${index * 0.1}s` }}
@@ -40,7 +40,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, onTabChange }) => {
               
               {/* Active indicator */}
               {activeTab === tab.id && (
-                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-primary-500 rounded-full animate-pulse" />
+                <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-accent-500 rounded-full animate-pulse" />
               )}
             </button>
           ))}

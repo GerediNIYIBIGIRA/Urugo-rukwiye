@@ -1,3 +1,6 @@
+
+
+
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { EmployerData } from '../types';
@@ -59,6 +62,29 @@ const EmployerRegistration: React.FC = () => {
     }
   };
 
+  const sendWelcomeEmail = async (email: string, name: string) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-welcome-email`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          to: email,
+          name: name,
+          type: 'employer'
+        }),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to send welcome email');
+      }
+    } catch (error) {
+      console.error('Error sending welcome email:', error);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -80,7 +106,10 @@ const EmployerRegistration: React.FC = () => {
 
       if (error) throw error;
 
-      setMessage({ type: 'success', text: 'Registration successful! We will contact you soon to complete the verification process.' });
+      // Send welcome email
+      await sendWelcomeEmail(formData.email, formData.fullName);
+
+      setMessage({ type: 'success', text: 'Registration successful! A welcome email has been sent to your email address. We will contact you soon to complete the verification process.' });
       setFormData({
         fullName: '',
         email: '',
@@ -104,14 +133,14 @@ const EmployerRegistration: React.FC = () => {
     <div className="space-y-8">
       <div className="text-center">
         <div className="flex justify-center mb-4">
-          <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center shadow-glow">
-            <User className="w-8 h-8 text-white" />
+          <div className="w-16 h-16 bg-gradient-to-br from-primary-500/20 to-accent-500/20 rounded-2xl flex items-center justify-center shadow-glow border border-primary-400/30">
+            <User className="w-8 h-8 text-primary-400" />
           </div>
         </div>
-        <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+        <h3 className="text-2xl md:text-3xl font-bold text-primary-400 mb-2">
           Employer Registration
         </h3>
-        <p className="text-white/80 leading-relaxed">
+        <p className="text-primary-300 leading-relaxed">
           Find the perfect domestic worker for your household needs
         </p>
       </div>
@@ -127,7 +156,7 @@ const EmployerRegistration: React.FC = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Personal Information */}
         <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-white flex items-center gap-2">
+          <h4 className="text-lg font-semibold text-primary-400 flex items-center gap-2">
             <User className="w-5 h-5" />
             Personal Information
           </h4>
@@ -179,13 +208,13 @@ const EmployerRegistration: React.FC = () => {
 
         {/* Service Requirements */}
         <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-white flex items-center gap-2">
+          <h4 className="text-lg font-semibold text-primary-400 flex items-center gap-2">
             <Briefcase className="w-5 h-5" />
             Service Requirements
           </h4>
           
           <div>
-            <label className="block text-sm font-semibold text-white mb-3">
+            <label className="block text-sm font-semibold text-primary-300 mb-3">
               Type of Service Needed *
             </label>
             <div className="flex flex-wrap gap-3">
@@ -207,7 +236,7 @@ const EmployerRegistration: React.FC = () => {
                     size="lg"
                     className={`transition-all duration-200 cursor-pointer ${
                       formData.services.includes(service.value) 
-                        ? 'ring-2 ring-primary-300 shadow-glow' 
+                        ? 'ring-2 ring-primary-400/50 shadow-glow' 
                         : 'hover:scale-105 opacity-70 hover:opacity-100'
                     }`}
                   >
@@ -240,7 +269,7 @@ const EmployerRegistration: React.FC = () => {
 
         {/* Additional Requirements */}
         <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-white flex items-center gap-2">
+          <h4 className="text-lg font-semibold text-primary-400 flex items-center gap-2">
             <FileText className="w-5 h-5" />
             Additional Information
           </h4>
@@ -256,18 +285,18 @@ const EmployerRegistration: React.FC = () => {
         </div>
 
         {/* Terms and Conditions */}
-        <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
+        <div className="flex items-start gap-3 p-4 bg-dark-800/30 rounded-xl border border-primary-400/20">
           <input
             type="checkbox"
             name="terms"
             checked={formData.terms}
             onChange={handleInputChange}
             required
-            className="mt-1 w-4 h-4 text-primary-600 bg-white/90 border-neutral-300 rounded focus:ring-primary-500 focus:ring-2"
+            className="mt-1 w-4 h-4 text-primary-600 bg-dark-700 border-primary-400 rounded focus:ring-primary-500 focus:ring-2"
           />
-          <label className="text-sm text-white/90 leading-relaxed">
-            I agree to the <span className="text-primary-300 font-medium">Terms and Conditions</span> and{' '}
-            <span className="text-primary-300 font-medium">Privacy Policy</span>. I understand that a membership fee applies and confirm that all information provided is accurate. *
+          <label className="text-sm text-primary-300 leading-relaxed">
+            I agree to the <span className="text-primary-400 font-medium">Terms and Conditions</span> and{' '}
+            <span className="text-primary-400 font-medium">Privacy Policy</span>. I understand that a membership fee applies and confirm that all information provided is accurate. *
           </label>
         </div>
 

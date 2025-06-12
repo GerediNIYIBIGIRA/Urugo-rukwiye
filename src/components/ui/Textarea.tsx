@@ -14,7 +14,7 @@ const Textarea: React.FC<TextareaProps> = ({
   return (
     <div className="space-y-2">
       {label && (
-        <label className="block text-sm font-semibold text-neutral-700">
+        <label className="block text-sm font-semibold text-primary-300">
           {label}
         </label>
       )}
@@ -23,7 +23,7 @@ const Textarea: React.FC<TextareaProps> = ({
         {...props}
       />
       {error && (
-        <p className="text-sm text-error-600 font-medium">{error}</p>
+        <p className="text-sm text-error-400 font-medium">{error}</p>
       )}
     </div>
   );

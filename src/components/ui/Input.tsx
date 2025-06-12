@@ -16,13 +16,13 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className="space-y-2">
       {label && (
-        <label className="block text-sm font-semibold text-neutral-700">
+        <label className="block text-sm font-semibold text-primary-300">
           {label}
         </label>
       )}
       <div className="relative">
         {icon && (
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400">
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-primary-400">
             {icon}
           </div>
         )}
@@ -32,7 +32,7 @@ const Input: React.FC<InputProps> = ({
         />
       </div>
       {error && (
-        <p className="text-sm text-error-600 font-medium">{error}</p>
+        <p className="text-sm text-error-400 font-medium">{error}</p>
       )}
     </div>
   );
