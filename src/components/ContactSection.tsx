@@ -84,8 +84,8 @@ const ContactSection: React.FC = () => {
             <h3 className="text-lg font-bold text-primary-400">Customer Support</h3>
           </div>
           <div className="space-y-2 text-primary-200">
-            <p><strong>Email:</strong> support@urugorukwiyeplatform.com</p>
-            <p><strong>Phone:</strong> +250 78X XXX XXX</p>
+            <p><strong>Email:</strong> iyachris2020@gmail.com</p>
+            <p><strong>Phone:</strong> +250 785 824 652</p>
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
               <span><strong>Hours:</strong> Monday - Friday, 9:00 AM - 5:00 PM CAT</span>
